@@ -1,0 +1,118 @@
+﻿@page
+@model test_project.Pages.AdminModel
+@{
+}
+<header>
+    <h2 class="text-center">List of Customer</h2>
+   
+</header>
+
+
+<div class="row mb-5">
+    <div class="col">
+        <a class='btn btn-primary' href='/Create'>New Customer</a>
+    </div>
+    <div class="col ml-auto">
+        <div class="mr-3">
+            <form class="row">
+                <div class="col-md-3">
+                    <input class="form-control me-2" type="search" name="search" value="@Model.search" placeholder="Search any fields" aria-label="Search">
+                </div>
+                <div class="col-md-3">
+                    <select class="form-control me-2" name="filterRegion">
+                        <option value="">All Regions</option>
+                        @foreach (var region in Model.Customers.Select(c => c.Region).Distinct())
+                        {
+                            if (Model.Request.Query["filterRegion"] == region)
+                            {
+                                <option value="@region" selected>@region</option>
+                            }
+                            else
+                            {
+                                <option value="@region">@region</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <input class="form-control me-2" type="text" name="filterFirstName" value="@Model.filterFirstName" placeholder="Name" aria-label="Filter by First Name">
+                </div>
+                <div class="col-md-3">
+                    <input class="form-control me-2" type="email" name="filterEmail" value="@Model.filterEmail" placeholder="Email" aria-label="Filter by Email">
+                </div>
+                <div class="col-md-3">
+                    <input class="form-control me-2" type="date" name="filterCreatedAt" value="@Model.filterCreatedAt" placeholder="Created At" aria-label="Filter by Created At">
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-outline-success" type="submit">Apply</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function sortTable(column) {
+        let orderBy = "desc";
+        let currentColumn = "@Model.column";
+        let currentOrder = "@Model.orderBy";
+        let search = "@Model.search";
+        let filterRegion = "@Model.Request.Query["filterRegion"]".replace(/&quot;/g, '');
+        let filterFirstName = "@Model.filterFirstName";
+        let filterEmail = "@Model.filterEmail";
+        let filterCreatedAt = "@Model.filterCreatedAt";
+
+        if (column === currentColumn) {
+            orderBy = currentOrder === "asc" ? "desc" : "asc";
+        }
+
+        window.location.href = `?search=${encodeURIComponent(search)}&filterRegion=${encodeURIComponent(filterRegion)}&filterFirstName=${encodeURIComponent(filterFirstName)}&filterEmail=${encodeURIComponent(filterEmail)}&filterCreatedAt=${encodeURIComponent(filterCreatedAt)}&column=${column}&orderBy=${orderBy}`;
+    }
+</script>
+
+<table class="table">
+    <tr>
+        <th style="cursor: pointer;" onclick="sortTable('Id')">Id</th>
+        <th style="cursor: pointer;" onclick="sortTable('FirstName')">FirstName</th>
+        <th style="cursor: pointer;" onclick="sortTable('LastName')">LastName</th>
+        <th style="cursor: pointer;" onclick="sortTable('Email')">Email</th>
+        <th style="cursor: pointer;" onclick="sortTable('Region')">Region</th>
+        <th style="cursor: pointer;" onclick="sortTable('CreatedAt')">Created At</th>
+        <th>Action</th>
+    </tr>
+
+    @foreach (var customer in Model.Customers)
+    {
+        <tr>
+            <td>@customer.Id</td>
+            <td>@customer.FirstName</td>
+            <td>@customer.LastName</td>
+            <td>@customer.Email</td>
+            <td>@customer.Region</td>
+            <td>@customer.CreatedAt.ToString("MM/dd/yyyy")</td>
+            <td style="white-space:nowrap">
+                <a class="btn btn-primary btn-sm" href="/Edit?id=@customer.Id">Edit</a>
+                <a class="btn btn-danger btn-sm" href="/Delete?id=@customer.Id">Delete</a>
+            </td>
+        </tr>
+    }
+</table>
+
+<nav>
+    <ul class="pagination">
+        @for (int i = 1; i <= Model.totalPages; i++)
+        {
+            string active = i == Model.pageIndex ? "active" : "";
+
+            <li class="page-item @active" aria-current="page">
+                <a class="page-link" href="?pageIndex=@i&search=@Model.search&filterRegion=@Model.Request.Query["filterRegion"]&filterFirstName=@Model.filterFirstName&filterEmail=@Model.filterEmail&filterCreatedAt=@Model.filterCreatedAt">@i</a>
+            </li>
+        }
+    </ul>
+</nav>
+
+<style>
+    .form-control {
+        width: 120%; /* Filtreleme alanlarının genişliğini %100 yap */
+    }
+</style>
