@@ -1,1 +1,1 @@
-Register işlemi yapıldıktan sonra PostgreSQL üzerinden rol atanması gerekmektedir. Aksi takdirde Müşterilerin bilgilerine (CRUD işlemlerine) ulaşılamamaktadır.
+Register işlemi yapıldıktan sonra PostgreSQL üzerinden Admin rolü atanması gerekmektedir. Aksi takdirde Müşterilerin bilgilerine (CRUD işlemlerine) ulaşılamamaktadır.
