@@ -20,7 +20,7 @@ Son olarak AspNetUserRoles tablosuna girin ve kopyaladığınız user ve admin i
 ![userRolecorrect](https://github.com/user-attachments/assets/76c1d200-a100-4879-94c7-56011b719927)
 
 4-)
-Müşterilerin bilgileri ve crud işlemleri görüntülenebilir.
+Artık login işlemi yaptıktan sonra müşterilerin bilgileri ve crud işlemleri görüntülenebilir.
 
 
 
